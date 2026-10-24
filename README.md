@@ -20,3 +20,11 @@ No GitHub remote or service health URL has been configured for this new project.
 Human Orchestrator controls scope and acceptance. Existing source/GitHub must not
 be deleted, emptied or renamed by deletion without explicit, specific approval.
 No commit/push/deployment authority is granted to workers by this README.
+
+## Existing planning context
+
+Read docs/planning/sa-WI-261024-FE995636.md and the adjacent human-decisions JSON.
+The owner already answered six scoped questions; reuse those answers.
+Owner-selected GitHub destination: https://github.com/teerp-jpg/pcl-mnt.
+Repository metadata was read on 2026-10-25; reported size is 0. No application commit
+was verified there, and no push/write connection is granted to workers.

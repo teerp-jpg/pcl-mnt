@@ -1,0 +1,120 @@
+{
+  "work_id": "WI-261024-FE995636",
+  "scope": "Maintenance planning only; no permission expansion",
+  "decisions": [
+    {
+      "id": "WI-261024-FE995636-R1-D1",
+      "raised_by": "sa",
+      "proposal": {
+        "question": "D1: MNT จะเชื่อมกับ CORE ทรัพย์สินแบบไหน และใครจะส่งสัญญา API ของ CORE มาให้",
+        "options": [
+          "A: เรียก REST API ของ CORE แล้ว cache ไว้ในตาราง vehicle_ref (ต้องได้เอกสาร endpoint/auth)",
+          "B: อ่านจาก DB view/replica ของ CORE โดยตรงแบบอ่านอย่างเดียว",
+          "C: CORE ส่ง event/webhook เมื่อทรัพย์สินเปลี่ยน",
+          "D: ช่วงแรกนำเข้าไฟล์ CSV จาก CORE แล้วค่อยเชื่อมจริงทีหลัง"
+        ],
+        "recommendation": "A คู่กับ interface CoreAssetGateway ช่วยแยกระบบออกจากกันได้ดีและไม่ผูกกับ schema ภายในของ CORE ถ้า CORE ยังไม่มี API ให้ใช้ D ไปก่อน",
+        "waiting_impact": "ทำ T4 ส่วนตัวต่อจริงไม่ได้ และยืนยัน AC-01/07/08 กับข้อมูลจริงไม่ได้",
+        "independent_work": "T1, T2, T3, T4 (interface + fake), T7 ทำต่อได้"
+      },
+      "status": "answered",
+      "answer": "D: ช่วงแรกนำเข้าไฟล์ CSV จาก CORE แล้วค่อยเชื่อมจริงทีหลัง\n\nคือทรัพย์สินบริษัทไม่ได้เยอะ และ ไม่ได้เปลี่ยนแปลงบ่อย ข้อมูลที่เอามาควรจะง่ายที่สุด และถ้ามีอัพเดทหรือ ทรัพย์สินเพิ่มเติม ก็เพิ่มที่ MNT ได้เลยแล้วค่อยส่งไปที่ CORE",
+      "decided_by": "human_orchestrator",
+      "decided_at": "2026-10-24T11:12:46.669772+00:00"
+    },
+    {
+      "id": "WI-261024-FE995636-R1-D2",
+      "raised_by": "sa",
+      "proposal": {
+        "question": "D2: 'Collective maintenance' หมายถึง Corrective (ซ่อมเมื่อเสีย) ใช่หรือไม่ และต้องมีประเภทอื่นอีกไหม (เช่น อุบัติเหตุ, ตรวจสภาพ/ต่อภาษี)",
+        "options": [
+          "A: ใช่ ใช้แค่ PM/CM",
+          "B: PM/CM + ACCIDENT",
+          "C: PM/CM + ACCIDENT + INSPECTION"
+        ],
+        "recommendation": "B เพราะค่าซ่อมจากอุบัติเหตุมักต้องแยกออกจาก CM ตอนวิเคราะห์ความน่าเชื่อถือของรถ",
+        "waiting_impact": "enum maintenance_type และรายงานต้องแก้ทีหลังถ้าเปลี่ยน",
+        "independent_work": "ทำทุกอย่างต่อได้ ทำ enum ให้ขยายเพิ่มได้"
+      },
+      "status": "answered",
+      "answer": "A: ใช่ ใช้แค่ PM/CM",
+      "decided_by": "human_orchestrator",
+      "decided_at": "2026-10-24T11:12:58.629413+00:00"
+    },
+    {
+      "id": "WI-261024-FE995636-R1-D3",
+      "raised_by": "sa",
+      "proposal": {
+        "question": "D3: ข้อมูลหลักอู่ (vendor) เก็บที่ไหน",
+        "options": [
+          "A: ใช้ vendor master ใน CORE/ERP",
+          "B: MNT จัดการรายชื่ออู่เอง"
+        ],
+        "recommendation": "A ถ้า CORE มี vendor master อยู่แล้ว (เชื่อมกับการจ่ายเงินได้ในอนาคต) ถ้าไม่มีให้ใช้ B",
+        "waiting_impact": "schema ตาราง garage และ T6 ยังสรุปไม่ได้",
+        "independent_work": "T1–T5 ใช้ garage_id แบบ local ไปก่อนได้"
+      },
+      "status": "answered",
+      "answer": "B: MNT จัดการรายชื่ออู่เอง",
+      "decided_by": "human_orchestrator",
+      "decided_at": "2026-10-24T11:13:06.372577+00:00"
+    },
+    {
+      "id": "WI-261024-FE995636-R1-D4",
+      "raised_by": "sa",
+      "proposal": {
+        "question": "D4: ต้องมีขั้นอนุมัติค่าใช้จ่ายก่อนปิดงานหรือไม่ ถ้ามี วงเงินเท่าไหร่และใครอนุมัติ",
+        "options": [
+          "A: ไม่มี บันทึกอย่างเดียว (ตามสเปก v0.1)",
+          "B: มี เมื่อยอดเกินวงเงินที่กำหนด",
+          "C: มีทุกงาน"
+        ],
+        "recommendation": "A ในเฟส 1 เพราะคำขอเน้นการบันทึกประวัติ",
+        "waiting_impact": "state machine อาจต้องเพิ่ม PENDING_APPROVAL",
+        "independent_work": "T2 ทำ state machine ตามข้อ 4 ไปก่อนได้"
+      },
+      "status": "answered",
+      "answer": "A: ไม่มี บันทึกอย่างเดียว (ตามสเปก v0.1)\n\nตอนนี้ยังไม่ต้องมีอนุมัติเพราะให้เป็นการบันทึกประวัติ แต่อนาคตผมจะให้มีการขออนุมัติ",
+      "decided_by": "human_orchestrator",
+      "decided_at": "2026-10-24T11:13:55.897735+00:00"
+    },
+    {
+      "id": "WI-261024-FE995636-R1-D5",
+      "raised_by": "sa",
+      "proposal": {
+        "question": "D5: สิทธิ์ดู/แก้ข้อมูลต้องแยกตามสาขา/หน่วยงานเจ้าของรถหรือไม่ (เป็นเรื่องที่ธุรกิจต้องตัดสินใจ SA ไม่ตัดสินแทน)",
+        "options": [
+          "A: ไม่แยก ทุกคนเห็นทุกคันตาม role",
+          "B: แยกตาม owning_unit ใน CORE",
+          "C: แยกตามสาขาที่ผู้ใช้สังกัด (ต้องมีการ map user–สาขา)"
+        ],
+        "recommendation": "ให้ธุรกิจเลือก ถ้าเลือก B ต้องยืนยันว่า CORE มี field owning_unit ที่เชื่อถือได้",
+        "waiting_impact": "T9 และ AC-11 แบบเต็มยังทำไม่ได้",
+        "independent_work": "ทำ role-based ข้อ 7 ไปก่อนได้"
+      },
+      "status": "answered",
+      "answer": "A: ไม่แยก ทุกคนเห็นทุกคันตาม role",
+      "decided_by": "human_orchestrator",
+      "decided_at": "2026-10-24T11:14:08.480359+00:00"
+    },
+    {
+      "id": "WI-261024-FE995636-R1-D6",
+      "raised_by": "sa",
+      "proposal": {
+        "question": "D6: จะพัฒนาระบบ MNT ใน repo ไหน",
+        "options": [
+          "A: สร้าง repo ใหม่สำหรับ MNT",
+          "B: ใส่ใน monorepo ของ CORE",
+          "C: ทำต้นแบบใน office-demo (ขัดกับ AGENTS.md เรื่อง standard library)"
+        ],
+        "recommendation": "A",
+        "waiting_impact": "Dev ยังเริ่ม T1 ใน repo ที่ถูกต้องไม่ได้",
+        "independent_work": "ทบทวนสเปกและเตรียม test case ได้"
+      },
+      "status": "answered",
+      "answer": "A: สร้าง repo ใหม่สำหรับ MNT\n\nhttps://github.com/teerp-jpg/pcl-mnt    ใช้ตัวนี้",
+      "decided_by": "human_orchestrator",
+      "decided_at": "2026-10-24T11:15:52.233829+00:00"
+    }
+  ]
+}
