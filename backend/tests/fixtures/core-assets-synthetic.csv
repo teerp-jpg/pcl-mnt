@@ -1,0 +1,4 @@
+core_asset_id,plate_no,province,brand,year,status,disposed_at
+SYNTHETIC-A-001,70-1234,จังหวัดสมมติ,TEST,2569,ACTIVE,
+SYNTHETIC-A-002,71-0001,จังหวัดสมมติ,TEST,2025,INACTIVE,
+SYNTHETIC-A-003,72-8888,จังหวัดสมมติ,TEST,,DISPOSED,2026-10-01

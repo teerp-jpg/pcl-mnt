@@ -3,8 +3,11 @@
 Owner clarification, 2026-10-25 (Asia/Bangkok): there is no existing Maintenance
 source. This will be a new project assigned to the AI team to evaluate its work.
 
-Status: planned. This folder only prepares a clean, independent project workspace.
-There is no application, database, deployed service, or passing business test yet.
+Status (2026-11-18): backend T1-T6 is implemented; see backend/README.md.
+Isolated PostgreSQL 17.12 verification passed 417 tests. Frontend and complete
+UAT delivery remain unfinished; this is not a production release.
+Source: D:\PCL Intelligence projects\PCL Mainetenance.
+The owner requested relocation and publication; automation remains stopped.
 Do not invent existing features, project progress, asset records or maintenance SOPs.
 
 Known intended domain: asset management, preventive maintenance scheduling and
@@ -16,7 +19,8 @@ Python 3.12, FastAPI, PostgreSQL 17, SQLAlchemy 2.0 select()/session.execute(),
 Alembic, psycopg 3, Docker Compose, pytest/httpx/Ruff when implementation begins.
 
 Keep this system independent of SAI4/TVO/PIP databases, ports and source.
-No GitHub remote or service health URL has been configured for this new project.
+GitHub destination: https://github.com/teerp-jpg/pcl-mnt.
+No complete UAT URL is claimed by this snapshot.
 Human Orchestrator controls scope and acceptance. Existing source/GitHub must not
 be deleted, emptied or renamed by deletion without explicit, specific approval.
 No commit/push/deployment authority is granted to workers by this README.
@@ -26,5 +30,5 @@ No commit/push/deployment authority is granted to workers by this README.
 Read docs/planning/sa-WI-261024-FE995636.md and the adjacent human-decisions JSON.
 The owner already answered six scoped questions; reuse those answers.
 Owner-selected GitHub destination: https://github.com/teerp-jpg/pcl-mnt.
-Repository metadata was read on 2026-10-25; reported size is 0. No application commit
-was verified there, and no push/write connection is granted to workers.
+The owner authorized this source snapshot to be committed and pushed on 2026-11-18.
+This one-time publication does not grant autonomous workers GitHub write access.
